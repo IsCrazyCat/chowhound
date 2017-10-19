@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.mvc.dao.DelicacyDao">
+
+    <resultMap id="DelicacyModelMap" type="com.spring.mvc.model.DelicacyModel">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="country" property="country" jdbcType="VARCHAR" />
+        <result column="is_send" property="isSend" jdbcType="CHAR" />
+        <result column="territory_id" property="territoryId" jdbcType="INTEGER" />
+        <result column="chowhound_id" property="chowhoundId" jdbcType="INTEGER" />
+        <result column="lovecount" property="lovecount" jdbcType="INTEGER" />
+        <result column="hatecount" property="hatecount" jdbcType="INTEGER" />
+        <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+        <result column="flag" property="flag" jdbcType="CHAR" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,`name`,nickname,`type`,country,is_send AS isSend,territory_id AS territoryId,chowhound_id AS chowhoundId
+        ,lovecount AS lovecount,hatecount AS hatecount,createtime AS createtime,flag AS flag
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND `name` like CONCAT(CONCAT('%', #{name}),'%')
+            </if>
+            <if test="nickname != null and nickname != ''">
+                AND nickname like CONCAT(CONCAT('%', #{nickname}),'%')
+            </if>
+            <if test="type != null and type != ''">
+                AND `type` = #{type}
+            </if>
+            <if test="country != null and country != ''">
+                AND country = #{country}
+            </if>
+            <if test="isSend != null and isSend != ''">
+                AND is_send = #{isSend}
+            </if>
+            <if test="territoryId != null and territoryId != ''">
+                AND territory_id = #{territoryId}
+            </if>
+            <if test="chowhoundId != null and chowhoundId != ''">
+                AND chowhound_id = #{chowhoundId}
+            </if>
+            <if test="lovecount != null and lovecount != ''">
+                AND lovecount &gt;= #{lovecount}
+            </if>
+            <if test="hatecount != null and hatecount != ''">
+                AND hatecount &lt;= #{hatecount}
+            </if>
+            <if test="createtime != null and createtime != ''">
+                AND createtime = #{createtime}
+            </if>
+            <if test="flag != null and flag != ''">
+                AND flag = #{flag}
+            </if>
+        </where>
+    </sql>
+    <select id="findDelicacy" parameterType="com.spring.mvc.model.DelicacyModel" resultMap="DelicacyModelMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            delicacy
+        <include refid="Base_Where_Clause"/>
+
+    </select>
+</mapper>
